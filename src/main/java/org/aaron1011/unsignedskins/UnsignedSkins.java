@@ -36,7 +36,7 @@ public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
 
             ClassWriter writer = new ClassWriter(0);
             classNode.accept(writer);
-            //return writer.toByteArray();
+            return writer.toByteArray();
         }
         return classBytes;
     }
@@ -50,6 +50,7 @@ public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
     private MethodNode findMethod(ClassNode classNode, String name, String desc) {
         for (MethodNode node: classNode.methods) {
             if (node.name.equals(name) && node.desc.equals(desc)) {
+                System.out.println("Found method");
                 return node;
             }
         }
@@ -63,7 +64,7 @@ public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
 
     @Override
     public String getModContainerClass() {
-        return UnsignedSkinsMod.class.getName();
+        return "org.aaron1011.unsignedskins.UnsignedSkinsMod";
     }
 
     @Override
