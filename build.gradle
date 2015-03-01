@@ -24,3 +24,10 @@ apply plugin: 'idea'
 minecraft {
     version = "1.8-11.14.1.1306"
 }
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'org.aaron1011.unsignedskins.UnsignedSkins',
+                   'FMLCorePluginContainsFMLMod': 'true'
+    }
+}

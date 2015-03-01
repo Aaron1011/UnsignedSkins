@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "unsignedskins",
+    "name": "UnsignedSkins",
+    "description": "This mod allows servers to use any skin texture they want in places like the tab list - no Mojang signature needed",
+    "version": "1.0.0",
+    "mcversion": "1.8",
+    "url": "",
+    "updateUrl": "",
+    "authors": ["Aaron1011"],
+    "credits": "Created by Aaron1011",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
