@@ -7,7 +7,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -15,7 +15,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion("1.8")
+@IFMLLoadingPlugin.MCVersion("1.8.9")
 public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
 
     @Override
@@ -29,10 +29,12 @@ public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
             MethodNode getTextures = this.findMethod(classNode, "getTextures", "(Lcom/mojang/authlib/GameProfile;Z)Ljava/util/Map;");
             MethodNode fillProfileProperties = this.findMethod(classNode, "fillProfileProperties", "(Lcom/mojang/authlib/GameProfile;Z)Lcom/mojang/authlib/GameProfile;");
             MethodNode fillGameProfile = this.findMethod(classNode, "fillGameProfile", "(Lcom/mojang/authlib/GameProfile;Z)Lcom/mojang/authlib/GameProfile;");
+            MethodNode isWhitelisted = this.findMethod(classNode, "isWhitelistedDomain", "(Ljava/lang/String;)Z");
 
             forceFalse(getTextures, 2);
             forceFalse(fillProfileProperties, 2);
             forceFalse(fillGameProfile, 2);
+            returnTrue(isWhitelisted);
 
             ClassWriter writer = new ClassWriter(0);
             classNode.accept(writer);
@@ -45,6 +47,12 @@ public class UnsignedSkins implements IFMLLoadingPlugin, IClassTransformer {
     private void forceFalse(MethodNode node, int index) {
         node.instructions.insert(new VarInsnNode(Opcodes.ISTORE, index));
         node.instructions.insert(new IntInsnNode(Opcodes.BIPUSH, 0));
+    }
+
+    // Reverse order
+    private void returnTrue(MethodNode node) {
+        node.instructions.insert(new InsnNode(Opcodes.IRETURN));
+        node.instructions.insert(new LdcInsnNode(1));
     }
 
     private MethodNode findMethod(ClassNode classNode, String name, String desc) {
